@@ -1,0 +1,21 @@
+Stock (Vensimname),Utility Estimate,LowerBound,UpperBound
+Nondisorderedheroin use,0.574,0.538,0.611
+Rx misuse no PY heroin,0.694,0.66,0.727
+Rx OUD no PY heroin no MOUD,0.626,0.591,0.661
+Rx OUD with PY heroin no MOUD,0.569,NA,NA
+HUD no MOUD,0.512,0.475,0.549
+Rx OUD no heroin by MOUD[Bup],0.766,0.7395,0.7925
+Rx OUD no heroin by MOUD[MMT],0.766,0.7395,0.7925
+Rx OUD no heroin by MOUD[Viv],0.766,0.7395,0.7925
+Rx OUD with heroin by MOUD[Bup],0.766,0.7395,0.7925
+Rx OUD with heroin by MOUD[MMT],0.766,0.7395,0.7925
+Rx OUD with heroin by MOUD[Viv],0.766,0.7395,0.7925
+HUD by MOUD[Bup],0.766,0.7395,0.7925
+HUD by MOUD[MMT],0.766,0.7395,0.7925
+HUD by MOUD[Viv],0.766,0.7395,0.7925
+Rx OUD no heroin in remission,0.807,0.78,0.834
+Rx OUD no heroin in stable remission,0.807,0.78,0.834
+Rx OUD with heroin in remission,0.807,0.78,0.834
+Rx OUD with heroin in stable remission,0.807,0.78,0.834
+HUD in remission,0.807,0.78,0.834
+HUD in stable remission,0.807,0.78,0.834
