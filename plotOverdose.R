@@ -1,9 +1,9 @@
 #Script to plot overdoses, fatal overdoses, and overdoses averted
 ### By Anneke Claypool
-### Last Updated 7/6/22
+### Last Updated 3/10/23
 
 plotOverdose <- function(cumulOverdose, coveragePercent){
-
+  
   library(gridExtra)
   library(lubridate)
   library(RColorBrewer)
@@ -67,16 +67,17 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
   
   #Subplots separating the single interventions
   plotTotalFatalOverdoseAvertedSingle <- ggplot(cumulOverdoseSingleInt, aes(x = cumulOverdoseSingleInt$Time,
-                                                             y = cumulOverdoseSingleInt$Overdose.deaths.Averted,
-                                                             color = cumulOverdoseSingleInt$abbrevName,
-                                                             linetype= cumulOverdoseSingleInt$abbrevName)) +
-    geom_line(size = 1.2)+
+                                                                            y = cumulOverdoseSingleInt$Overdose.deaths.Averted,
+                                                                            color = cumulOverdoseSingleInt$abbrevName,
+                                                                            linetype= cumulOverdoseSingleInt$abbrevName)) +
+    geom_line(linewidth = 1.2)+
     labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", linetype = "Strategy", title = "") +
-    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 3000))+#4300 2200 max(cumulOverdose$Overdose.deaths.Averted))) +
+    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 1500))+#4300 2200 max(cumulOverdose$Overdose.deaths.Averted))) +
     scale_color_manual(values = cbPalette[c(2,3,4,5,1,7)])+
     #scale_linetype_manual(values=c("twodash", "dotted", "dashed","dotdash", "solid", "longdash"))+
+    scale_linetype_manual(values=c("solid","twodash", "dotted","dashed","solid","dotdash"))+
     theme_bw() +
-    theme(text = element_text(size = 13)) +
+    #theme(text = element_text(width = 13)) +
     theme(legend.position = "right")
   
   plotTotalFatalOverdoseAvertedSingle
@@ -88,14 +89,14 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
          dpi = 700)
   #Subplots separating the single interventions with the portfolios
   plotTotalFatalOverdoseAverted2portfolio <- ggplot(cumulOverdosePortfolios2, aes(x = cumulOverdosePortfolios2$Time,
-                                                                            y = cumulOverdosePortfolios2$Overdose.deaths.Averted,
-                                                                            color = cumulOverdosePortfolios2$abbrevName)) +
+                                                                                  y = cumulOverdosePortfolios2$Overdose.deaths.Averted,
+                                                                                  color = cumulOverdosePortfolios2$abbrevName)) +
     geom_line()+
     labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", title = "") +
-    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 3000))+#2200 max(cumulOverdose$Overdose.deaths.Averted))) +
+    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 1500))+#2200 max(cumulOverdose$Overdose.deaths.Averted))) +
     #scale_color_manual(values = cbPalette[c(1,2,3,4,5,6)])+
     theme_bw() +
-    theme(text = element_text(size = 13)) +
+    #theme(text = element_text(linewidth = 13)) +
     theme(legend.position = "right")
   
   plotTotalFatalOverdoseAverted2portfolio
@@ -112,10 +113,10 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
                                                                                   color = cumulOverdosePortfolios3$abbrevName)) +
     geom_line()+
     labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", title = "") +
-    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 4300))+#2200 max(cumulOverdose$Overdose.deaths.Averted))) +
+    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 1500))+#2200 max(cumulOverdose$Overdose.deaths.Averted))) +
     #scale_color_manual(values = cbPalette[c(1,2,3,4,5,6)])+
     theme_bw() +
-    theme(text = element_text(size = 13)) +
+    #theme(text = element_text(linewidth = 13)) +
     theme(legend.position = "right")
   
   plotTotalFatalOverdoseAverted3portfolio
@@ -128,15 +129,17 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
   
   #Subplots separating the single interventions with the portfolios 4-5
   plotTotalFatalOverdoseAverted45portfolio <- ggplot(cumulOverdosePortfolios4.5, aes(x = cumulOverdosePortfolios4.5$Time,
-                                                                                  y = cumulOverdosePortfolios4.5$Overdose.deaths.Averted,
-                                                                                  color = cumulOverdosePortfolios4.5$abbrevName,
-                                                                                  linetype= cumulOverdosePortfolios4.5$abbrevName)) +
-    geom_line(size = 1.2)+
+                                                                                     y = cumulOverdosePortfolios4.5$Overdose.deaths.Averted,
+                                                                                     color = cumulOverdosePortfolios4.5$abbrevName,
+                                                                                     linetype= cumulOverdosePortfolios4.5$abbrevName)) +
+    geom_line(linewidth = 1.2)+
     labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", linetype = "Strategy", title = "") +
-    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 3000))+#4300 max(cumulOverdose$Overdose.deaths.Averted))) +
+    scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 1500))+#4300 max(cumulOverdose$Overdose.deaths.Averted))) +
     scale_color_manual(values = cbPalette[c(2,3,4,5,7,1)])+
+    scale_linetype_manual(values=c("solid","twodash", "dotted","dashed","dotdash","solid"))+
+    #scale_color_manual(values = cbPalette[c(2,7,8,5,4,1)])+
     theme_bw() +
-    theme(text = element_text(size = 13)) +
+    #theme(text = element_text(linewidth = 13)) +
     theme(legend.position = "right")
   
   plotTotalFatalOverdoseAverted45portfolio
@@ -147,12 +150,25 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
          units = "in",
          dpi = 700)
   
+  ### Save submitted figures as .eps files
+  
+  #Single interventions
+  setEPS()
+  postscript(paste0("OverdoseDeaths1intervention",runDate,".eps"))
+  plotTotalFatalOverdoseAvertedSingle
+  dev.off()
+  
+  #Large scale portfolio
+  setEPS()
+  postscript(paste0("OverdoseDeaths45intervention",runDate,".eps"))
+  plotTotalFatalOverdoseAverted45portfolio
+  dev.off()
   # ## Get more colors for the portfolios
   # # Classic palette BuPu, with 4 colors
   # coul <- brewer.pal(9, "BuGn") #PuOr
   # # Add more colors to this palette :
   # coul <- colorRampPalette(coul)(15)
-
+  
 }
 
 # ## Portfolios with 2 interventions
@@ -174,7 +190,7 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
 #   geom_line()+
 #   labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", title = "") +
 #   theme_bw() +
-#   theme(text = element_text(size = 13)) +
+#   theme(text = element_text(linewidth = 13)) +
 #   scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 2200))+# max(cumulOverdose$Overdose.deaths.Averted))) +
 #   scale_color_manual(labels = c("Status Quo","Contingency Management + \nPsychotherapy",                
 #                                 "Contingency Management + \nHub and Spoke",                
@@ -202,7 +218,7 @@ plotOverdose <- function(cumulOverdose, coveragePercent){
 #   geom_line()+
 #   labs(x = "Year", y = "Number of Overdose Deaths Averted", color = "Strategy", title = "") +
 #   theme_bw() +
-#   theme(text = element_text(size = 13)) +
+#   theme(text = element_text(linewidth = 13)) +
 #   scale_y_continuous(limits = c(min(cumulOverdose$Overdose.deaths.Averted), 2200))+# max(cumulOverdose$Overdose.deaths.Averted))) +
 #   scale_color_manual(labels = c("Status Quo",                                        
 #                                 "ED Initiation + \nContingency Management + \nPsychotherapy",

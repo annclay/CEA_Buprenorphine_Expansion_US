@@ -1,7 +1,7 @@
 ### Runscript for cost effectiveness analysis
 ### Uploads the model outputs, costs and QALYs
 ### By Anneke Claypool
-### Last Updated 7/6/22
+### Last Updated 3/10/23
 
 #Clear everything
 rm(list = ls())
@@ -180,16 +180,16 @@ for (i in 1:interventionRampUpYears) {
 }
 
 #Criminal Justice Costs
-  discCriminalCosts <- data.frame(0:nYears)
-  discCriminalCosts$Time<- startYear:(startYear +nYears)
-  colnames(discCriminalCosts)[1]<- "yearNumber"
-  discCriminalCosts <- discCriminalCosts %>%
-    mutate(dcCriminalJusticeHUDTx = cCriminalJusticeHUDTx/(1+discRate)^yearNumber,
-           dcCriminalJusticeOUDTx = cCriminalJusticeOUDTx/(1+discRate)^yearNumber,
-           dcCriminalJusticeHUD = cCriminalJusticeHUD/(1+discRate)^yearNumber,
-           dcCriminalJusticeOUD = cCriminalJusticeOUD/(1+discRate)^yearNumber,
-           dcCriminalJusticeHUDRemission = cCriminalJusticeHUDRemission/(1+discRate)^yearNumber,
-           dcCriminalJusticeOUDRemission = cCriminalJusticeOUDRemission/(1+discRate)^yearNumber)
+discCriminalCosts <- data.frame(0:nYears)
+discCriminalCosts$Time<- startYear:(startYear +nYears)
+colnames(discCriminalCosts)[1]<- "yearNumber"
+discCriminalCosts <- discCriminalCosts %>%
+  mutate(dcCriminalJusticeHUDTx = cCriminalJusticeHUDTx/(1+discRate)^yearNumber,
+         dcCriminalJusticeOUDTx = cCriminalJusticeOUDTx/(1+discRate)^yearNumber,
+         dcCriminalJusticeHUD = cCriminalJusticeHUD/(1+discRate)^yearNumber,
+         dcCriminalJusticeOUD = cCriminalJusticeOUD/(1+discRate)^yearNumber,
+         dcCriminalJusticeHUDRemission = cCriminalJusticeHUDRemission/(1+discRate)^yearNumber,
+         dcCriminalJusticeOUDRemission = cCriminalJusticeOUDRemission/(1+discRate)^yearNumber)
 
 # ### Discounting QALYs
 discQALYs <- data.frame(0:nYears)
@@ -243,16 +243,16 @@ l_results_cm <- runCEA(interventionModelOutput0 = cm0,
                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_ther <- runCEA(interventionModelOutput0 = ther0,
-                       interventionCoverage = c(0, coverage, 0, 0, 0),#format: [cm, ther, hs, ed, tele]
-                       interventionName = "Psychotherapy",
-                       abbrevName = "P",
-                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                         interventionCoverage = c(0, coverage, 0, 0, 0),#format: [cm, ther, hs, ed, tele]
+                         interventionName = "Psychotherapy",
+                         abbrevName = "P",
+                         discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_hs <- runCEA(interventionModelOutput0 = hs0,
-                         interventionCoverage = c(0, 0, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
-                         interventionName = "Hub and Spoke",
-                         abbrevName = "HS",
-                         discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                       interventionCoverage = c(0, 0, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
+                       interventionName = "Hub and Spoke",
+                       abbrevName = "HS",
+                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_ed <- runCEA(interventionModelOutput0 = ed0,
                        interventionCoverage = c(0, 0, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
@@ -261,40 +261,40 @@ l_results_ed <- runCEA(interventionModelOutput0 = ed0,
                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_tele <- runCEA(interventionModelOutput0 = tele0,
-                       interventionCoverage = c(0, 0, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                       interventionName = "Telehealth",
-                       abbrevName = "TH",
-                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                         interventionCoverage = c(0, 0, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                         interventionName = "Telehealth",
+                         abbrevName = "TH",
+                         discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_cm_ther <- runCEA(interventionModelOutput0 = port_cm_ther0,
-                       interventionCoverage = c(coverage, coverage, 0, 0, 0),#format: [cm, ther, hs, ed, tele]
-                       interventionName = "Contingency Management + Psychotherapy",
-                       abbrevName = "CM+P",
-                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
-
-l_results_port_cm_hs <- runCEA(interventionModelOutput0 = port_cm_hs0,
-                        interventionCoverage = c(coverage, 0, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
-                        interventionName = "Contingency Management + Hub and Spoke",
-                        abbrevName = "CM+HS",
-                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
-
-l_results_port_hs_ther <- runCEA(interventionModelOutput0 = port_hs_ther0,
-                               interventionCoverage = c(0, coverage, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
-                               interventionName = "Psychotherapy + Hub and Spoke",
-                               abbrevName = "P+HS",
-                               discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
-
-l_results_port_cm_ther_hs <- runCEA(interventionModelOutput0 = port_cm_ther_hs0,
-                                 interventionCoverage = c(coverage, coverage, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
-                                 interventionName = "Contingency Management + Psychotherapy + Hub and Spoke",
-                                 abbrevName = "CM+P+HS",
+                                 interventionCoverage = c(coverage, coverage, 0, 0, 0),#format: [cm, ther, hs, ed, tele]
+                                 interventionName = "Contingency Management + Psychotherapy",
+                                 abbrevName = "CM+P",
                                  discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
-l_results_port_ed_cm <- runCEA(interventionModelOutput0 = port_ed_cm0,
-                                    interventionCoverage = c(coverage, 0, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                    interventionName = "Contingency Management + ED Initiation",
-                                    abbrevName = "CM+ED",
+l_results_port_cm_hs <- runCEA(interventionModelOutput0 = port_cm_hs0,
+                               interventionCoverage = c(coverage, 0, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
+                               interventionName = "Contingency Management + Hub and Spoke",
+                               abbrevName = "CM+HS",
+                               discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+
+l_results_port_hs_ther <- runCEA(interventionModelOutput0 = port_hs_ther0,
+                                 interventionCoverage = c(0, coverage, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
+                                 interventionName = "Psychotherapy + Hub and Spoke",
+                                 abbrevName = "P+HS",
+                                 discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+
+l_results_port_cm_ther_hs <- runCEA(interventionModelOutput0 = port_cm_ther_hs0,
+                                    interventionCoverage = c(coverage, coverage, coverage, 0, 0),#format: [cm, ther, hs, ed, tele]
+                                    interventionName = "Contingency Management + Psychotherapy + Hub and Spoke",
+                                    abbrevName = "CM+P+HS",
                                     discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+
+l_results_port_ed_cm <- runCEA(interventionModelOutput0 = port_ed_cm0,
+                               interventionCoverage = c(coverage, 0, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                               interventionName = "Contingency Management + ED Initiation",
+                               abbrevName = "CM+ED",
+                               discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_port_ed_hs <- runCEA(interventionModelOutput0 = port_ed_hs0,
                                     interventionCoverage = c(0, 0, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
@@ -303,100 +303,100 @@ l_results_port_port_ed_hs <- runCEA(interventionModelOutput0 = port_ed_hs0,
                                     discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_ther <- runCEA(interventionModelOutput0 = port_ed_ther0,
-                                    interventionCoverage = c(0, coverage, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                    interventionName = "Psychotherapy + ED Initiation",
-                                    abbrevName = "P+ED",
-                                    discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                 interventionCoverage = c(0, coverage, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                                 interventionName = "Psychotherapy + ED Initiation",
+                                 abbrevName = "P+ED",
+                                 discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_ther <- runCEA(interventionModelOutput0 = port_ed_cm_ther0,
-                                      interventionCoverage = c(coverage, coverage, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                      interventionName = "Contingency Management + Psychotherapy + ED Initiation",
-                                      abbrevName = "CM+P+ED",
-                                      discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                    interventionCoverage = c(coverage, coverage, 0, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                                    interventionName = "Contingency Management + Psychotherapy + ED Initiation",
+                                    abbrevName = "CM+P+ED",
+                                    discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_hs <- runCEA(interventionModelOutput0 = port_ed_cm_hs0,
-                                    interventionCoverage = c(coverage, 0, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                    interventionName = "Contingency Management + Hub and Spoke + ED Initiation",
-                                    abbrevName = "CM+HS+ED",
-                                    discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
-
-l_results_port_ed_ther_hs <- runCEA(interventionModelOutput0 = port_ed_ther_hs0,
-                                  interventionCoverage = c(0, coverage, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                  interventionName = "Psychotherapy + Hub and Spoke + ED Initiation",
-                                  abbrevName = "P+HS+ED",
+                                  interventionCoverage = c(coverage, 0, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                                  interventionName = "Contingency Management + Hub and Spoke + ED Initiation",
+                                  abbrevName = "CM+HS+ED",
                                   discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
-l_results_port_ed_cm_ther_hs <- runCEA(interventionModelOutput0 = port_ed_cm_ther_hs0,
-                                    interventionCoverage = c(coverage, coverage, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
-                                    interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + ED Initiation",
-                                    abbrevName = "CM+P+HS+ED",
+l_results_port_ed_ther_hs <- runCEA(interventionModelOutput0 = port_ed_ther_hs0,
+                                    interventionCoverage = c(0, coverage, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                                    interventionName = "Psychotherapy + Hub and Spoke + ED Initiation",
+                                    abbrevName = "P+HS+ED",
                                     discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
-l_results_port_cm_tele<- runCEA(interventionModelOutput0 = port_cm_tele0,
-                                       interventionCoverage = c(coverage, 0, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Telehealth",
-                                       abbrevName = "CM+TH",
+l_results_port_ed_cm_ther_hs <- runCEA(interventionModelOutput0 = port_ed_cm_ther_hs0,
+                                       interventionCoverage = c(coverage, coverage, coverage, coverage, 0),#format: [cm, ther, hs, ed, tele]
+                                       interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + ED Initiation",
+                                       abbrevName = "CM+P+HS+ED",
                                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+
+l_results_port_cm_tele<- runCEA(interventionModelOutput0 = port_cm_tele0,
+                                interventionCoverage = c(coverage, 0, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                interventionName = "Contingency Management + Telehealth",
+                                abbrevName = "CM+TH",
+                                discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ther_tele <- runCEA(interventionModelOutput0 = port_ther_tele0,
-                                       interventionCoverage = c(0, coverage, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Psychotherapy + Telehealth",
-                                       abbrevName = "P+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                   interventionCoverage = c(0, coverage, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                   interventionName = "Psychotherapy + Telehealth",
+                                   abbrevName = "P+TH",
+                                   discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_hs_tele <- runCEA(interventionModelOutput0 = port_hs_tele0,
-                                       interventionCoverage = c(0, 0, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Hub and Spoke + Telehealth",
-                                       abbrevName = "HS+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                 interventionCoverage = c(0, 0, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                 interventionName = "Hub and Spoke + Telehealth",
+                                 abbrevName = "HS+TH",
+                                 discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_tele <- runCEA(interventionModelOutput0 = port_ed_tele0,
-                                       interventionCoverage = c(0, 0, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "ED Initiation + Telehealth",
-                                       abbrevName = "ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                 interventionCoverage = c(0, 0, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                 interventionName = "ED Initiation + Telehealth",
+                                 abbrevName = "ED+TH",
+                                 discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_cm_ther_tele <- runCEA(interventionModelOutput0 = port_cm_ther_tele0,
-                                       interventionCoverage = c(coverage, coverage, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Psychotherapy + Telehealth",
-                                       abbrevName = "CM+P+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                      interventionCoverage = c(coverage, coverage, 0, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                      interventionName = "Contingency Management + Psychotherapy + Telehealth",
+                                      abbrevName = "CM+P+TH",
+                                      discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_cm_hs_tele<- runCEA(interventionModelOutput0 = port_cm_hs_tele0,
-                                       interventionCoverage = c(coverage, 0, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Hub and Spoke + Telehealth",
-                                       abbrevName = "CM+HS+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                   interventionCoverage = c(coverage, 0, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                   interventionName = "Contingency Management + Hub and Spoke + Telehealth",
+                                   abbrevName = "CM+HS+TH",
+                                   discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ther_hs_tele<- runCEA(interventionModelOutput0 = port_ther_hs_tele0,
-                                       interventionCoverage = c(0, coverage, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Psychotherapy + Hub and Spoke + Telehealth",
-                                       abbrevName = "P+HS+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                     interventionCoverage = c(0, coverage, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                     interventionName = "Psychotherapy + Hub and Spoke + Telehealth",
+                                     abbrevName = "P+HS+TH",
+                                     discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_tele <- runCEA(interventionModelOutput0 = port_ed_cm_tele0,
-                                       interventionCoverage = c(coverage, 0, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + ED Initiation + Telehealth",
-                                       abbrevName = "CM+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                    interventionCoverage = c(coverage, 0, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                    interventionName = "Contingency Management + ED Initiation + Telehealth",
+                                    abbrevName = "CM+ED+TH",
+                                    discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_hs_tele <- runCEA(interventionModelOutput0 = port_ed_hs_tele0,
-                                       interventionCoverage = c(0, 0, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Hub and Spoke + ED Initiation + Telehealth",
-                                       abbrevName = "HS+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                    interventionCoverage = c(0, 0, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                    interventionName = "Hub and Spoke + ED Initiation + Telehealth",
+                                    abbrevName = "HS+ED+TH",
+                                    discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_ther_tele <- runCEA(interventionModelOutput0 = port_ed_ther_tele0,
-                                       interventionCoverage = c(0, coverage, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Psychotherapy + ED Initiation +Telehealth",
-                                       abbrevName = "P+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                      interventionCoverage = c(0, coverage, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                      interventionName = "Psychotherapy + ED Initiation +Telehealth",
+                                      abbrevName = "P+ED+TH",
+                                      discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_ther_tele<- runCEA(interventionModelOutput0 = port_ed_cm_ther_tele0,
-                                       interventionCoverage = c(coverage, coverage, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Psychotherapy + ED Initiation + Telehealth",
-                                       abbrevName = "CM+P+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                        interventionCoverage = c(coverage, coverage, 0, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                        interventionName = "Contingency Management + Psychotherapy + ED Initiation + Telehealth",
+                                        abbrevName = "CM+P+ED+TH",
+                                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_hs_tele <- runCEA(interventionModelOutput0 = port_ed_cm_hs_tele0,
                                        interventionCoverage = c(coverage, 0, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
@@ -405,22 +405,22 @@ l_results_port_ed_cm_hs_tele <- runCEA(interventionModelOutput0 = port_ed_cm_hs_
                                        discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_ther_hs_tele <- runCEA(interventionModelOutput0 = port_ed_ther_hs_tele0,
-                                       interventionCoverage = c(0, coverage, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Psychotherapy + Hub and Spoke + ED Initiation + Telehealth",
-                                       abbrevName = "P+HS+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                         interventionCoverage = c(0, coverage, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                         interventionName = "Psychotherapy + Hub and Spoke + ED Initiation + Telehealth",
+                                         abbrevName = "P+HS+ED+TH",
+                                         discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_cm_ther_hs_tele <- runCEA(interventionModelOutput0 = port_cm_ther_hs_tele0,
-                                       interventionCoverage = c(coverage, coverage, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + Telehealth",
-                                       abbrevName = "CM+P+HS+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                         interventionCoverage = c(coverage, coverage, coverage, 0, coverage),#format: [cm, ther, hs, ed, tele]
+                                         interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + Telehealth",
+                                         abbrevName = "CM+P+HS+TH",
+                                         discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 l_results_port_ed_cm_ther_hs_tele <- runCEA(interventionModelOutput0 = port_ed_cm_ther_hs_tele0,
-                                       interventionCoverage = c(coverage, coverage, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
-                                       interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + ED Initiation + Telehealth",
-                                       abbrevName = "CM+P+HS+ED+TH",
-                                       discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
+                                            interventionCoverage = c(coverage, coverage, coverage, coverage, coverage),#format: [cm, ther, hs, ed, tele]
+                                            interventionName = "Contingency Management + Psychotherapy + Hub and Spoke + ED Initiation + Telehealth",
+                                            abbrevName = "CM+P+HS+ED+TH",
+                                            discCosts, discCriminalCosts, discQALYs, interventionRampUpYears, iCriminalJusticeOn, startYear)
 
 
 ### List of names
@@ -510,7 +510,7 @@ colnames(OverdoseTable2)<- c("Intervention",
                              paste0("Total Nonfatal Overdoses 1999-",max(cumulOverdose$Time)),
                              paste0("Total Fatal Overdoses 1999-",max(cumulOverdose$Time)),
                              "Total Overdose Deaths Averted")
- 
+
 OverdoseTable2021_end <- cumulOverdose %>%
   group_by(Intervention)%>%
   mutate(Cumulative.overdose.deaths.time.period = sum(Total.overdose.deaths),
@@ -523,10 +523,10 @@ OverdoseTable2021_end <- cumulOverdose %>%
   select(Intervention, Cumulative.nonfatal.overdose.time.period, Cumulative.nonfatal.overdose.averted.time.period,
          Cumulative.overdose.deaths.time.period, Cumulative.overdose.deaths.averted)
 colnames(OverdoseTable2021_end)<- c("Intervention", 
-                             paste0("Total Nonfatal Overdoses ",min(cumulOverdose$Time),"-",max(cumulOverdose$Time)),
-                             "Total Nonfatal Overdoses Averted",
-                             paste0("Total Fatal Overdoses ",min(cumulOverdose$Time),"-",max(cumulOverdose$Time)),
-                             "Total Overdose Deaths Averted")
+                                    paste0("Total Nonfatal Overdoses ",min(cumulOverdose$Time),"-",max(cumulOverdose$Time)),
+                                    "Total Nonfatal Overdoses Averted",
+                                    paste0("Total Fatal Overdoses ",min(cumulOverdose$Time),"-",max(cumulOverdose$Time)),
+                                    "Total Overdose Deaths Averted")
 
 #CEA Table- QALYs, Costs, NMB, ICERs
 CEAtable <- rbind(l_results_sq$CEAtable, l_results_cm$CEAtable)
@@ -560,14 +560,14 @@ CEAtable <- rbind(CEAtable,l_results_port_ed_cm_hs_tele$CEAtable)
 CEAtable <- rbind(CEAtable,l_results_port_ed_ther_hs_tele$CEAtable)
 CEAtable <- rbind(CEAtable,l_results_port_cm_ther_hs_tele$CEAtable)
 CEAtable <- rbind(CEAtable,l_results_port_ed_cm_ther_hs_tele$CEAtable)
-                  
+
 CEAtable <- CEAtable %>%
   mutate(incrementalCost = totalcost - totalcost[Intervention == "Status Quo"],
          incrementalQALY = totalQALY - totalQALY[Intervention == "Status Quo"],
          ICERvsStatusQuo = incrementalCost/incrementalQALY)
 icers <- calculate_icers(cost = CEAtable$totalcost,
-                effect = CEAtable$totalQALY,
-                strategies = CEAtable$Intervention)
+                         effect = CEAtable$totalQALY,
+                         strategies = CEAtable$Intervention)
 
 
 ### Add QALYS to overdose/health outcomes table
@@ -596,19 +596,24 @@ icersCEAtable <- left_join(icers, CEAtable)%>%
 
 #Create Figures
 if(iPlotResults){
-source('plotOverdose.R')
-plotOverdose(cumulOverdose, coveragePercent)
-source('plotCEAplane.R')
-plotCEAplane(icers, coveragePercent)
+  source('plotOverdose.R')
+  plotOverdose(cumulOverdose, coveragePercent)
+  source('plotCEAplane.R')
+  plotCEAplane(icers, coveragePercent)
 }
 
 #save the results
 if(iSaveResults){
   date.run <- Sys.Date()
-  write.csv(CEAtable, file = paste0(FILE_PATH_OUTPUTS,"CEAtable",coveragePercent,"cov",date.run,"healthcareOnly",".csv"))
+  if(iProductivityCosts + iCriminalJusticeOn == 2){
+    perspective = "societal"}
+  if(iProductivityCosts + iCriminalJusticeOn == 0){
+    perspective = "healthcareOnly"}
+  write.csv(CEAtable, file = paste0(FILE_PATH_OUTPUTS,"CEAtable",coveragePercent,"cov",date.run,perspective,".csv"))
   #write.csv(cumulOverdose, file = paste0(FILE_PATH_OUTPUTS,"Results/OverdosetableYearly",date.run,".csv"))
   #write.csv(OverdoseTable2021_end, file = paste0(FILE_PATH_OUTPUTS,"OverdoseTable2.",coveragePercent,"cov",date.run,".csv"))
-  write.csv(healthOutcomesTable, file = paste0(FILE_PATH_OUTPUTS,"HealthOutcomesTable2.",coveragePercent,"cov",date.run,"healthcareOnly",".csv"))
-  write.csv(icers, file = paste0(FILE_PATH_OUTPUTS,"ICERsTable.",coveragePercent,"cov",date.run,"healthcareOnly",".csv"))
-  write.csv(icersCEAtable, file = paste0(FILE_PATH_OUTPUTS,"ICERsCEATable.",coveragePercent,"cov",date.run,"healthcareOnly",".csv"))
+  write.csv(healthOutcomesTable, file = paste0(FILE_PATH_OUTPUTS,"HealthOutcomesTable2.",coveragePercent,"cov",date.run,perspective,".csv"))
+  write.csv(icers, file = paste0(FILE_PATH_OUTPUTS,"ICERsTable.",coveragePercent,"cov",date.run,perspective,".csv"))
+  write.csv(icersCEAtable, file = paste0(FILE_PATH_OUTPUTS,"ICERsCEATable.",coveragePercent,"cov",date.run,perspective,".csv"))
 }
+
